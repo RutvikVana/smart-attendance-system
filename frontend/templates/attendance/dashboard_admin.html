@@ -1,0 +1,56 @@
+{% extends 'attendance/base.html' %}
+
+{% block content %}
+<div class="card-grid">
+  <div class="card">
+    <h2>Total Students</h2>
+    <p>{{ students.count }}</p>
+  </div>
+  <div class="card">
+    <h2>Total Subjects</h2>
+    <p>{{ subjects.count }}</p>
+  </div>
+  <div class="card">
+    <h2>Total Attendance Records</h2>
+    <p>{{ total_attendance }}</p>
+  </div>
+</div>
+
+<div class="input-card">
+  <h2>Class Summary</h2>
+  <table>
+    <thead>
+      <tr><th>Class</th><th>Students</th></tr>
+    </thead>
+    <tbody>
+      {% for class_name, count in class_counts.items %}
+      <tr>
+        <td>{{ class_name }}</td>
+        <td>{{ count }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="table-card">
+  <h2>At-Risk Students</h2>
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Class</th><th>Attendance %</th><th>Risk</th></tr>
+    </thead>
+    <tbody>
+      {% for item in at_risk %}
+      <tr>
+        <td>{{ item.student.user.get_full_name }} ({{ item.student.roll_number }})</td>
+        <td>{{ item.student.class_name }}</td>
+        <td>{{ item.percent }}%</td>
+        <td>{{ item.risk }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4">No students below 75% attendance.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

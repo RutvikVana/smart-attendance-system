@@ -1,0 +1,118 @@
+{% extends 'attendance/base.html' %}
+
+{% block content %}
+<div class="input-card">
+  <h2>Attendance Analytics</h2>
+  <form method="get">
+    <select name="subject" class="select-field">
+      <option value="">All subjects</option>
+      {% for subject in subjects %}
+      <option value="{{ subject.id }}" {% if selected_subject and selected_subject.id == subject.id %}selected{% endif %}>{{ subject.name }} ({{ subject.code }})</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="button">Filter</button>
+  </form>
+</div>
+
+<div class="card-grid">
+  <div class="card">
+    <h2>Selected Subject</h2>
+    <p>{% if selected_subject %}{{ selected_subject.name }}{% else %}All Subjects{% endif %}</p>
+  </div>
+  <div class="card">
+    <h2>No. of Students</h2>
+    <p>{{ student_stats|length }}</p>
+  </div>
+  <div class="card">
+    <h2>At-Risk Students</h2>
+    <p>{{ at_risk_count }}</p>
+  </div>
+</div>
+
+<div class="chart-container">
+  <h2>Student Attendance Percentage</h2>
+  <canvas id="studentChart"></canvas>
+</div>
+
+<div class="chart-container">
+  <h2>Subject Average Attendance</h2>
+  <canvas id="subjectChart"></canvas>
+</div>
+
+<div class="table-card">
+  <h2>Continuous Absence Detection</h2>
+  <table>
+    <thead><tr><th>Student</th><th>Max Absent Streak</th></tr></thead>
+    <tbody>
+      {% for item in continuous_absent %}
+      <tr>
+        <td>{{ item.student.user.get_full_name }}</td>
+        <td>{{ item.streak }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="2">No continuous absence records found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="table-card">
+  <h2>Student Risk Levels</h2>
+  <table>
+    <thead><tr><th>Student</th><th>Attendance %</th><th>Risk</th></tr></thead>
+    <tbody>
+      {% for item in student_stats %}
+      <tr>
+        <td>{{ item.student.user.get_full_name }}</td>
+        <td>{{ item.percent }}%</td>
+        <td>{{ item.risk }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<script>
+  const studentNames = [{% for item in student_stats %}'{{ item.student.user.get_full_name }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+  const studentPercents = [{% for item in student_stats %}{{ item.percent }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+
+  const subjectLabels = [{% for item in subject_analysis %}'{{ item.subject.name }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+  const subjectPercents = [{% for item in subject_analysis %}{{ item.average_percent }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+
+  const studentCanvas = document.getElementById('studentChart').getContext('2d');
+  new Chart(studentCanvas, {
+    type: 'bar',
+    data: {
+      labels: studentNames,
+      datasets: [{
+        label: 'Attendance %',
+        data: studentPercents,
+        backgroundColor: '#3563eb',
+      }],
+    },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: true, max: 100 } },
+    },
+  });
+
+  const subjectCanvas = document.getElementById('subjectChart').getContext('2d');
+  new Chart(subjectCanvas, {
+    type: 'line',
+    data: {
+      labels: subjectLabels,
+      datasets: [{
+        label: 'Average Attendance %',
+        data: subjectPercents,
+        borderColor: '#28a745',
+        backgroundColor: 'rgba(40, 167, 69, 0.15)',
+        fill: true,
+      }],
+    },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: true, max: 100 } },
+    },
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automated Attendance Monitoring</title>
+  <link rel="stylesheet" href="{% static 'attendance/css/styles.css' %}" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Attendance Analytics System</div>
+    <nav class="nav-links">
+      {% if request.user.is_authenticated %}
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'analytics' %}">Analytics</a>
+        {% if request.user.role == 'faculty' %}
+          <a href="{% url 'mark_attendance' %}">Mark Attendance</a>
+        {% endif %}
+        {% if request.user.role == 'student' %}
+          <a href="{% url 'student_report' %}">My Report</a>
+        {% endif %}
+        <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="main-container">
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">Automated Student Attendance Monitoring &amp; Analytics System</footer>
+</body>
+</html>

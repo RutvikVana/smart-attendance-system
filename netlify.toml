@@ -1,0 +1,11 @@
+[build]
+  publish = "frontend"
+
+# Optional: if you want Netlify to act as the public entrypoint and serve the Django app from Render,
+# uncomment and set your Render URL.
+#
+# [[redirects]]
+#   from = "/*"
+#   to = "https://YOUR-RENDER-SERVICE.onrender.com/:splat"
+#   status = 200
+#   force = true

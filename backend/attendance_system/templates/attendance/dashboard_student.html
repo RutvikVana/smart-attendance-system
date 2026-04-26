@@ -1,0 +1,41 @@
+{% extends 'attendance/base.html' %}
+
+{% block content %}
+<div class="card-grid">
+  <div class="card">
+    <h2>Attendance %</h2>
+    <p>{{ percent }}%</p>
+  </div>
+  <div class="card">
+    <h2>Risk Level</h2>
+    <p>{{ risk }}</p>
+  </div>
+  <div class="card">
+    <h2>Class</h2>
+    <p>{{ student.class_name }}</p>
+  </div>
+</div>
+
+<div class="table-card">
+  <h2>Subject Breakdown</h2>
+  <table>
+    <thead>
+      <tr><th>Subject</th><th>Attendance %</th></tr>
+    </thead>
+    <tbody>
+      {% for item in subject_breakdown %}
+      <tr>
+        <td>{{ item.subject.name }}</td>
+        <td>{{ item.percent }}%</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="2">No attendance records available.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="input-card">
+  <a class="button" href="{% url 'student_report' %}">View Detailed Report</a>
+</div>
+{% endblock %}

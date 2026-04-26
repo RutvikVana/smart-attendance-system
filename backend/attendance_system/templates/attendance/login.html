@@ -1,0 +1,15 @@
+{% extends 'attendance/base.html' %}
+
+{% block content %}
+<div class="login-panel">
+  <h1>Login</h1>
+  <form method="post">
+    {% csrf_token %}
+    <label>Username</label>
+    {{ form.username }}
+    <label>Password</label>
+    {{ form.password }}
+    <button type="submit" class="button">Sign In</button>
+  </form>
+</div>
+{% endblock %}

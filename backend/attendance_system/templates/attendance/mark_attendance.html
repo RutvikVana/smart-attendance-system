@@ -1,0 +1,45 @@
+{% extends 'attendance/base.html' %}
+
+{% block content %}
+<div class="input-card">
+  <h2>Mark Attendance</h2>
+  <form method="get">
+    <label>Subject</label>
+    {{ form.subject }}
+    <label>Date</label>
+    {{ form.attendance_date }}
+    <button type="submit" class="button">Load Students</button>
+  </form>
+</div>
+
+{% if students %}
+<div class="input-card">
+  <h2>Attendance Sheet for {{ subject.name }} ({{ subject.class_name }})</h2>
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="subject" value="{{ subject.id }}">
+    <input type="hidden" name="attendance_date" value="{{ form.attendance_date.value }}">
+    <table>
+      <thead>
+        <tr><th>Student</th><th>Roll Number</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        {% for student in students %}
+        <tr>
+          <td>{{ student.user.get_full_name }}</td>
+          <td>{{ student.roll_number }}</td>
+          <td>
+            <select name="status_{{ student.id }}" class="select-field">
+              <option value="present">Present</option>
+              <option value="absent">Absent</option>
+            </select>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <button type="submit" class="button roomy">Save Attendance</button>
+  </form>
+</div>
+{% endif %}
+{% endblock %}

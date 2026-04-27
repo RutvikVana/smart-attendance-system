@@ -1,0 +1,53 @@
+{% extends 'attendance/base.html' %}
+
+{% block content %}
+<div class="card-grid">
+  <div class="card">
+    <h2>{{ student.user.get_full_name }}</h2>
+    <p>Roll Number: {{ student.roll_number }}</p>
+  </div>
+  <div class="card">
+    <h2>Overall %</h2>
+    <p>{{ overall_percent }}%</p>
+  </div>
+  <div class="card">
+    <h2>Risk Level</h2>
+    <p>{{ risk }}</p>
+  </div>
+</div>
+
+<div class="table-card">
+  <h2>Subject Attendance Report</h2>
+  <table>
+    <thead><tr><th>Subject</th><th>Present</th><th>Total</th><th>Attendance %</th></tr></thead>
+    <tbody>
+      {% for item in summary %}
+      <tr>
+        <td>{{ item.subject.name }}</td>
+        <td>{{ item.present }}</td>
+        <td>{{ item.total }}</td>
+        <td>{{ item.percent }}%</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4">No attendance information is available.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="table-card">
+  <h2>Attendance Timeline</h2>
+  <table>
+    <thead><tr><th>Date</th><th>Subject</th><th>Status</th></tr></thead>
+    <tbody>
+      {% for record in records %}
+      <tr>
+        <td>{{ record.attendance.date }}</td>
+        <td>{{ record.attendance.subject.name }}</td>
+        <td>{{ record.get_status_display }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

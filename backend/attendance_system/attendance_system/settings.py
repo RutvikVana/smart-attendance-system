@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from pathlib import Path
 
 import environ
@@ -19,6 +20,16 @@ SECRET_KEY = env(
 DEBUG = env('DEBUG')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', '.onrender.com'])
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[])
+=======
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = 'django-insecure-jb+s#zy#ygaq-c+q=tuy3w5-msw-c=ko0*k)2la@b6owp-!_yq'
+DEBUG = True
+ALLOWED_HOSTS = []
+>>>>>>> c818bfed71e18c00aec65c38872acbc33e9172be
 
 
 # Application definition
@@ -35,7 +46,10 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+<<<<<<< HEAD
     'whitenoise.middleware.WhiteNoiseMiddleware',
+=======
+>>>>>>> c818bfed71e18c00aec65c38872acbc33e9172be
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -49,7 +63,11 @@ ROOT_URLCONF = 'attendance_system.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+<<<<<<< HEAD
         'DIRS': [BASE_DIR / 'templates'],
+=======
+        'DIRS': [BASE_DIR.parent.parent / 'frontend' / 'templates'],
+>>>>>>> c818bfed71e18c00aec65c38872acbc33e9172be
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,7 +91,14 @@ LOGIN_URL = 'login'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
+<<<<<<< HEAD
     'default': env.db('DATABASE_URL', default=f"sqlite:///{(BASE_DIR / 'db.sqlite3').as_posix()}"),
+=======
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+>>>>>>> c818bfed71e18c00aec65c38872acbc33e9172be
 }
 
 # PostgreSQL-ready example:
@@ -121,6 +146,7 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
+<<<<<<< HEAD
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STORAGES = {
@@ -135,4 +161,9 @@ STORAGES = {
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 
+=======
+STATICFILES_DIRS = [BASE_DIR.parent.parent / 'frontend' / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+>>>>>>> c818bfed71e18c00aec65c38872acbc33e9172be
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -144,15 +144,9 @@ dmypy.json
 ehthumbs.db
 Thumbs.db
 
-<<<<<<< HEAD
 # Static files (collected output)
-/backend/attendance_system/staticfiles/
-/staticfiles/
-=======
-# Static files
 staticfiles/
-static/
->>>>>>> c818bfed71e18c00aec65c38872acbc33e9172be
+backend/attendance_system/staticfiles/
 
 # Database
 *.sqlite3
